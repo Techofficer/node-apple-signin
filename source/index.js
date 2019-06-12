@@ -8,7 +8,7 @@ const ENDPOINT_URL = 'https://appleid.apple.com';
 const DEFAULT_SCOPE = 'email';
 
 const getAuthorizationUrl = (options = {}) => {
-  if (!options.clientId) throw Error('client_id is empty');
+  if (!options.clientID) throw Error('client_id is empty');
   if (!options.redirectUri) throw Error('redirect_uri is empty');
 
   const url = new URL(ENDPOINT_URL);
@@ -16,7 +16,7 @@ const getAuthorizationUrl = (options = {}) => {
 
   url.searchParams.append('response_type', 'code');
   url.searchParams.append('state', options.state || 'state');
-  url.searchParams.append('client_id', options.clientId);
+  url.searchParams.append('client_id', options.clientID);
   url.searchParams.append('redirect_uri', options.redirectUri);
   url.searchParams.append('scope', options.scope || DEFAULT_SCOPE);
 
@@ -24,7 +24,7 @@ const getAuthorizationUrl = (options = {}) => {
 };
 
 const getClientSecret = (options) => {
-  if (!options.clientId) throw Error('clientId is empty');
+  if (!options.clientID) throw Error('clientID is empty');
   if (!options.teamId) throw Error('teamId is empty');
   if (!options.keyIdentifier) throw Error('keyIdentifier is empty');
   if (!options.privateKeyPath) throw Error('privateKeyPath is empty');
@@ -37,7 +37,7 @@ const getClientSecret = (options) => {
     iat: timeNow,
     exp: timeNow + 15777000,
     aud: ENDPOINT_URL,
-    sub: options.clientId,
+    sub: options.clientID,
   };
 
   const header = { alg: 'ES256', kid: options.keyIdentifier };
@@ -47,14 +47,14 @@ const getClientSecret = (options) => {
 };
 
 const getAuthorizationToken = async (code, options) => {
-  if (!options.clientId) throw Error('clientId is empty');
+  if (!options.clientID) throw Error('clientID is empty');
   if (!options.redirectUri) throw Error('redirectUri is empty');
 
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/token';
 
   const form = {
-    client_id: options.clientId,
+    client_id: options.clientID,
     client_secret: getClientSecret(options),
     code,
     grant_type: 'authorization_code',
@@ -66,13 +66,13 @@ const getAuthorizationToken = async (code, options) => {
 };
 
 const refreshAuthorizationToken = async (refreshToken, options) => {
-  if (!options.clientId) throw Error('clientId is empty');
+  if (!options.clientID) throw Error('clientID is empty');
 
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/token';
 
   const form = {
-    client_id: options.clientId,
+    client_id: options.clientID,
     client_secret: getClientSecret(options),
     refresh_token: refreshToken,
     grant_type: 'refresh_token',
@@ -105,4 +105,5 @@ module.exports = {
   getAuthorizationToken,
   refreshAuthorizationToken,
   verifyIdToken,
+  getClientSecret
 };

@@ -1,6 +1,6 @@
 {
   "name": "apple-signin",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Node.JS wrapper around Sign In with Apple REST API",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

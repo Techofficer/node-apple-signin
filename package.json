@@ -1,7 +1,7 @@
 {
   "name": "apple-signin",
-  "version": "1.0.0",
-  "description": "Node.JS wrapper around Sign In with Apple feature",
+  "version": "1.0.1",
+  "description": "Node.JS wrapper around Sign In with Apple REST API",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,10 +20,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Techofficer/apple-signin.git"
+    "url": "git://github.com/Techofficer/node-apple-signin.git"
   },
   "bugs": {
-    "url": "https://github.com/Techofficer/apple-signin/issues"
+    "url": "https://github.com/Techofficer/node-apple-signin/issues"
   },
   "license": "MIT",
   "licenses": [

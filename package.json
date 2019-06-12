@@ -1,0 +1,47 @@
+{
+  "name": "apple-signin",
+  "version": "1.0.0",
+  "description": "Node.JS wrapper around Sign In with Apple feature",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "apple",
+    "signin",
+    "auth",
+    "login",
+    "node",
+    "authentication"
+  ],
+  "author": {
+    "name": "Artem Efremov",
+    "email": "efremov.artserg@gmail.com",
+    "url": "https://gotechmakers.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Techofficer/apple-signin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Techofficer/apple-signin/issues"
+  },
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "node-rsa": "^1.0.5",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  },
+  "main": "./source",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3"
+  }
+}

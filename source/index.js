@@ -8,8 +8,8 @@ const ENDPOINT_URL = 'https://appleid.apple.com';
 const DEFAULT_SCOPE = 'email';
 
 const getAuthorizationUrl = (options = {}) => {
-  if (!options.clientID) throw Error('client_id is empty');
-  if (!options.redirectUri) throw Error('redirect_uri is empty');
+  if (!options.clientID) throw Error('clientID is empty');
+  if (!options.redirectUri) throw Error('redirectUri is empty');
 
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/authorize';

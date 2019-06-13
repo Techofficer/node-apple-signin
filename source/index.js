@@ -18,7 +18,12 @@ const getAuthorizationUrl = (options = {}) => {
   url.searchParams.append('state', options.state || 'state');
   url.searchParams.append('client_id', options.clientID);
   url.searchParams.append('redirect_uri', options.redirectUri);
-  url.searchParams.append('scope', options.scope || DEFAULT_SCOPE);
+
+  if (options.scope){
+    url.searchParams.append('scope', 'openid ' + options.scope);
+  } else {
+    url.searchParams.append('scope', 'openid');
+  }
 
   return url.toString();
 };
@@ -49,13 +54,14 @@ const getClientSecret = (options) => {
 const getAuthorizationToken = async (code, options) => {
   if (!options.clientID) throw Error('clientID is empty');
   if (!options.redirectUri) throw Error('redirectUri is empty');
+  if (!options.clientSecret) throw Error('clientSecret is empty');
 
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/token';
 
   const form = {
     client_id: options.clientID,
-    client_secret: getClientSecret(options),
+    client_secret: options.clientSecret,
     code,
     grant_type: 'authorization_code',
     redirect_uri: options.redirectUri,
@@ -67,13 +73,14 @@ const getAuthorizationToken = async (code, options) => {
 
 const refreshAuthorizationToken = async (refreshToken, options) => {
   if (!options.clientID) throw Error('clientID is empty');
+  if (!options.clientSecret) throw Error('clientSecret is empty');
 
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/token';
 
   const form = {
     client_id: options.clientID,
-    client_secret: getClientSecret(options),
+    client_secret: options.clientSecret,
     refresh_token: refreshToken,
     grant_type: 'refresh_token',
   };

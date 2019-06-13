@@ -48,12 +48,18 @@ http://localhost:3000/auth/apple/callback?code=somecode&state=123.
 More detail can be found in [Apple docs](https://developer.apple.com/documentation/signinwithapplerestapi/generate_and_validate_tokens).
 
 ```javascript
+
+const clientSecret = appleSignin.getClientSecret({
+    clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
+    teamId: "teamId", // Apple Developer Team ID.
+    privateKeyPath: "/var/www/app/AuthKey_XXX.p8", // path to private key associated with your client ID.
+    keyIdentifier: "XXX" // identifier of the private key.    
+});
+
 const options = {
     clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     redirectUri: "http://localhost:3000/auth/apple/callback", // use the same value which you passed to authorisation URL.
-    teamId: "teamId", // Apple Developer Team ID.
-    privateKeyPath: "/var/www/app/AuthKey_XXX.p8", // path to private key associated with your client ID.
-    keyIdentifier: "XXX" // identifier of the private key.
+    clientSecret: clientSecret
 };
  
 appleSignin.getAuthorizationToken(code, options).then(tokenResponse => {
@@ -85,11 +91,17 @@ appleSignin.verifyIdToken(tokenResponse.id_token).then(result => {
 ```
 ### 4. Refresh access token after expiration
 ```javascript
-const options = {
+
+const clientSecret = appleSignin.getClientSecret({
     clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     teamId: "teamId", // Apple Developer Team ID.
     privateKeyPath: "/var/www/app/AuthKey_XXX.p8", // path to private key associated with your client ID.
-    keyIdentifier: "XXX" // identifier of the private key.
+    keyIdentifier: "XXX" // identifier of the private key.    
+});
+
+const options = {
+    clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
+    clientSecret: clientSecret
 };
  
 appleSignin.refreshAuthorizationToken(refreshToken, options).then(result => {

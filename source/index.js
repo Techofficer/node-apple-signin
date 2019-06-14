@@ -28,7 +28,7 @@ const getAuthorizationUrl = (options = {}) => {
   return url.toString();
 };
 
-const getClientSecret = (options) => {
+const getClientSecret = options => {
   if (!options.clientID) throw Error('clientID is empty');
   if (!options.teamId) throw Error('teamId is empty');
   if (!options.keyIdentifier) throw Error('keyIdentifier is empty');

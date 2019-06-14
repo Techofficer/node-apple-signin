@@ -11,7 +11,7 @@ https://developer.apple.com/sign-in-with-apple/get-started/) related to "Sign in
 3. You should create App ID and Service ID in your Apple Developer Account.
 4. You should generate private key for your Service ID in your Apple Developer Account.
 
-More details about configuration can be found in [Apple docs](https://help.apple.com/developer-account/#/dev1c0e25352).
+More detail about configuration can be found in [blog post](https://medium.com/@artyomefremov/add-sign-in-with-apple-button-to-your-website-today-part-1-12ed1444623a?postPublishedType=initial) and [Apple docs](https://help.apple.com/developer-account/#/dev1c0e25352).
 
 ## Installation
 
@@ -110,6 +110,11 @@ appleSignin.refreshAuthorizationToken(refreshToken, options).then(result => {
     console.log(error);
 })
 ```
+
+## Examples
+Developers using the popular [Express](http://expressjs.com) web framework can refer to an [example](https://github.com/Techofficer/express-apple-signin) as a starting point for their own web applications. 
+
+You can also check [live example](http://apple-auth.gotechmakers.com)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

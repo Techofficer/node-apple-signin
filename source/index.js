@@ -101,7 +101,7 @@ const getApplePublicKey = async () => {
   return pubKey.exportKey(['public']);
 };
 
-const verifyIdToken = async (idToken) => {
+const verifyIdToken = async idToken => {
   const pubKey = await getApplePublicKey();
   return jwt.verify(idToken, pubKey, { algorithms: 'RS256' });
 };

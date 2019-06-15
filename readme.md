@@ -29,7 +29,7 @@ Start "Sign in with Apple" flow by redirecting user to the authorization URL.
 const appleSignin = require("apple-signin");
 
 const options = {
-    clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
+    clientID: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     redirectUri: "http://localhost:3000/auth/apple/callback",
     state: "123", // optional, An unguessable random string. It is primarily used to protect against CSRF attacks.
     scope: "email" // optional, default value is "email".
@@ -50,14 +50,14 @@ More detail can be found in [Apple docs](https://developer.apple.com/documentati
 ```javascript
 
 const clientSecret = appleSignin.getClientSecret({
-    clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
+    clientID: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     teamId: "teamId", // Apple Developer Team ID.
     privateKeyPath: "/var/www/app/AuthKey_XXX.p8", // path to private key associated with your client ID.
     keyIdentifier: "XXX" // identifier of the private key.    
 });
 
 const options = {
-    clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
+    clientID: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     redirectUri: "http://localhost:3000/auth/apple/callback", // use the same value which you passed to authorisation URL.
     clientSecret: clientSecret
 };
@@ -82,7 +82,7 @@ Result of ```getAuthorizationToken``` command is a JSON object representing Appl
 
 ### 3. Verify token signature and get unique user's identifier
 ```javascript
-appleSignin.verifyIdToken(tokenResponse.id_token).then(result => {
+appleSignin.verifyIdToken(tokenResponse.id_token, clientID).then(result => {
     const userAppleId = result.sub;
 }).catch(error => {
     // Token is not verified
@@ -93,14 +93,14 @@ appleSignin.verifyIdToken(tokenResponse.id_token).then(result => {
 ```javascript
 
 const clientSecret = appleSignin.getClientSecret({
-    clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
+    clientID: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     teamId: "teamId", // Apple Developer Team ID.
     privateKeyPath: "/var/www/app/AuthKey_XXX.p8", // path to private key associated with your client ID.
     keyIdentifier: "XXX" // identifier of the private key.    
 });
 
 const options = {
-    clientId: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
+    clientID: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     clientSecret: clientSecret
 };
  

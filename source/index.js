@@ -104,7 +104,7 @@ const getApplePublicKey = async () => {
 
 const verifyIdToken = async (idToken, clientID) => {
   const applePublicKey = await getApplePublicKey();
-  const jwtClaims = jwt.verify(idToken, applePublicKey, { algorithms: 'RS256' });
+  const jwtClaims = await jwt.verify(idToken, applePublicKey, { algorithms: 'RS256' });
 
   if (jwtClaims.iss !== TOKEN_ISSUER) throw new Error('id token not issued by correct OpenID provider - expected: ' + TOKEN_ISSUER + ' | from: ' + jwtClaims.iss);
   if (clientID !== undefined && jwtClaims.aud !== clientID) throw new Error('aud parameter does not include this client - is: ' + jwtClaims.aud + '| expected: ' + clientID);

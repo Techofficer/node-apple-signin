@@ -102,15 +102,14 @@ const getApplePublicKey = async () => {
   return pubKey.exportKey(['public']);
 };
 
-const verifyIdToken = async (idToken, clientID) => {
+const verifyIdToken = async (idToken, clientID = undefined, {ignoreExpiration = false} = {}) => {
   const applePublicKey = await getApplePublicKey();
-  const jwtClaims = jwt.verify(idToken, applePublicKey, { algorithms: 'RS256' });
-
-  if (jwtClaims.iss !== TOKEN_ISSUER) throw new Error('id token not issued by correct OpenID provider - expected: ' + TOKEN_ISSUER + ' | from: ' + jwtClaims.iss);
-  if (clientID !== undefined && jwtClaims.aud !== clientID) throw new Error('aud parameter does not include this client - is: ' + jwtClaims.aud + '| expected: ' + clientID);
-  if (jwtClaims.exp < (Date.now() / 1000)) throw new Error('id token has expired');
-
-  return jwtClaims;
+  return jwt.verify(idToken, applePublicKey, {
+    algorithms: 'RS256',
+    audience: clientID,
+    issuer: TOKEN_ISSUER,
+    ignoreExpiration
+  });
 };
 
 

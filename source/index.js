@@ -19,17 +19,16 @@ const getAuthorizationUrl = (options = {}) => {
   url.searchParams.append('state', options.state || 'state');
   url.searchParams.append('client_id', options.clientID);
   url.searchParams.append('redirect_uri', options.redirectUri);
+  url.searchParams.append('response_mode', options.responseMode);
 
-  if (options.scope){
-    url.searchParams.append('scope', 'openid ' + options.scope);
-  } else {
-    url.searchParams.append('scope', 'openid');
+  if (options.scope) {
+    url.searchParams.append('scope', `openid ${options.scope || DEFAULT_SCOPE}`);
   }
 
   return url.toString();
 };
 
-const getClientSecret = options => {
+const getClientSecret = (options) => {
   if (!options.clientID) throw new Error('clientID is empty');
   if (!options.teamId) throw new Error('teamId is empty');
   if (!options.keyIdentifier) throw new Error('keyIdentifier is empty');
@@ -106,8 +105,8 @@ const verifyIdToken = async (idToken, clientID) => {
   const applePublicKey = await getApplePublicKey();
   const jwtClaims = jwt.verify(idToken, applePublicKey, { algorithms: 'RS256' });
 
-  if (jwtClaims.iss !== TOKEN_ISSUER) throw new Error('id token not issued by correct OpenID provider - expected: ' + TOKEN_ISSUER + ' | from: ' + jwtClaims.iss);
-  if (clientID !== undefined && jwtClaims.aud !== clientID) throw new Error('aud parameter does not include this client - is: ' + jwtClaims.aud + '| expected: ' + clientID);
+  if (jwtClaims.iss !== TOKEN_ISSUER) throw new Error(`id token not issued by correct OpenID provider - expected: ${TOKEN_ISSUER} | from: ${jwtClaims.iss}`);
+  if (clientID !== undefined && jwtClaims.aud !== clientID) throw new Error(`aud parameter does not include this client - is: ${jwtClaims.aud}| expected: ${clientID}`);
   if (jwtClaims.exp < (Date.now() / 1000)) throw new Error('id token has expired');
 
   return jwtClaims;
@@ -119,5 +118,5 @@ module.exports = {
   getAuthorizationToken,
   refreshAuthorizationToken,
   verifyIdToken,
-  getClientSecret
+  getClientSecret,
 };

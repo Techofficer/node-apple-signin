@@ -69,6 +69,8 @@ appleSignin.getAuthorizationToken(code, options).then(tokenResponse => {
 });
 ```
 
+It's also possible to pass the private key directly as a string under `privateKey`, instead of passing `privateKeyPath`.
+
 Result of ```getAuthorizationToken``` command is a JSON object representing Apple's [TokenResponse](https://developer.apple.com/documentation/signinwithapplerestapi/tokenresponse):
 ```javascript
 {
@@ -89,6 +91,7 @@ appleSignin.verifyIdToken(tokenResponse.id_token, clientID).then(result => {
     console.log(error);
 });
 ```
+
 ### 4. Refresh access token after expiration
 ```javascript
 
@@ -110,6 +113,8 @@ appleSignin.refreshAuthorizationToken(refreshToken, options).then(result => {
     console.log(error);
 })
 ```
+
+It's also possible to pass the private key directly as a string under `privateKey`, instead of passing `privateKeyPath`.
 
 ## Examples
 Developers using the popular [Express](http://expressjs.com) web framework can refer to an [example](https://github.com/Techofficer/express-apple-signin) as a starting point for their own web applications. 

@@ -33,8 +33,9 @@ const getClientSecret = options => {
   if (!options.clientID) throw new Error('clientID is empty');
   if (!options.teamId) throw new Error('teamId is empty');
   if (!options.keyIdentifier) throw new Error('keyIdentifier is empty');
-  if (!options.privateKeyPath) throw new Error('privateKeyPath is empty');
-  if (!fs.existsSync(options.privateKeyPath)) throw new Error("Can't find private key");
+  if (!options.privateKeyPath && !options.privateKey) throw new Error('privateKey and privateKeyPath are empty');
+  if (options.privateKeyPath && options.privateKey) throw new Error('privateKey and privateKeyPath cannot be passed together, choose one of them');
+  if (options.privateKeyPath && !fs.existsSync(options.privateKeyPath)) throw new Error("Can't find private key");
 
   const timeNow = Math.floor(Date.now() / 1000);
 
@@ -47,7 +48,7 @@ const getClientSecret = options => {
   };
 
   const header = { alg: 'ES256', kid: options.keyIdentifier };
-  const key = fs.readFileSync(options.privateKeyPath);
+  const key = options.privateKeyPath ? fs.readFileSync(options.privateKeyPath) : options.privateKey;
 
   return jwt.sign(claims, key, { algorithm: 'ES256', header });
 };

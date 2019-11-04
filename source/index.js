@@ -54,7 +54,6 @@ const getClientSecret = options => {
 
 const getAuthorizationToken = async (code, options) => {
   if (!options.clientID) throw new Error('clientID is empty');
-  if (!options.redirectUri) throw new Error('redirectUri is empty');
   if (!options.clientSecret) throw new Error('clientSecret is empty');
 
   const url = new URL(ENDPOINT_URL);
@@ -65,8 +64,12 @@ const getAuthorizationToken = async (code, options) => {
     client_secret: options.clientSecret,
     code,
     grant_type: 'authorization_code',
-    redirect_uri: options.redirectUri,
   };
+
+  // Passing redirect_uri is required when login happens through the browser.
+  if (options.redirectUri) {
+    form.redirect_uri = options.redirectUri;
+  }
 
   const body = await request({ url: url.toString(), method: 'POST', form });
   return JSON.parse(body);

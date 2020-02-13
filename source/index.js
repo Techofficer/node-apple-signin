@@ -96,7 +96,7 @@ const getApplePublicKey = async (kid) => {
 
   const data = await request({ url: url.toString(), method: 'GET' });
   const key = JSON.parse(data).keys.find(key => key.kid === kid);
-  if (!key) throw Error("Can't find apple public key");;
+  if (!key) throw new Error("Can't find apple public key");;
 
   const pubKey = new NodeRSA();
   pubKey.importKey({ n: Buffer.from(key.n, 'base64'), e: Buffer.from(key.e, 'base64') }, 'components-public');

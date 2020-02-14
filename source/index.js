@@ -90,27 +90,39 @@ const refreshAuthorizationToken = async (refreshToken, options) => {
   return JSON.parse(body);
 };
 
-const getApplePublicKey = async () => {
+const getApplePublicKeys = async () => {
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/keys';
 
   const data = await request({ url: url.toString(), method: 'GET' });
-  const key = JSON.parse(data).keys[0];
 
-  const pubKey = new NodeRSA();
-  pubKey.importKey({ n: Buffer.from(key.n, 'base64'), e: Buffer.from(key.e, 'base64') }, 'components-public');
-  return pubKey.exportKey(['public']);
+  return (JSON.parse(data).keys || []).map(key => {
+    const pubKey = new NodeRSA();
+    pubKey.importKey({ n: Buffer.from(key.n, 'base64'), e: Buffer.from(key.e, 'base64') }, 'components-public');
+    return {pubKey: pubKey.exportKey(['public']), alg: key.alg};
+  })
 };
 
-const verifyIdToken = async (idToken, clientID) => {
-  const applePublicKey = await getApplePublicKey();
-  const jwtClaims = jwt.verify(idToken, applePublicKey, { algorithms: 'RS256' });
+const verifyIdTokenForKey = async (appleKey, idToken, clientID) => {
+  const jwtClaims = jwt.verify(idToken, appleKey.pubKey, { algorithms: appleKey.alg });
 
   if (jwtClaims.iss !== TOKEN_ISSUER) throw new Error('id token not issued by correct OpenID provider - expected: ' + TOKEN_ISSUER + ' | from: ' + jwtClaims.iss);
   if (clientID !== undefined && jwtClaims.aud !== clientID) throw new Error('aud parameter does not include this client - is: ' + jwtClaims.aud + '| expected: ' + clientID);
   if (jwtClaims.exp < (Date.now() / 1000)) throw new Error('id token has expired');
 
   return jwtClaims;
+};
+
+const verifyIdToken = async (idToken, clientID) => {
+  const keys = await getApplePublicKeys();
+  const res = key => verifyIdTokenForKey(key, idToken, clientID).then(r => ({r})).catch(err => ({err}));
+
+  const resolution = await Promise.all(keys.map(res));
+
+  const validity = resolution.find(item => item.r);
+
+  if(!validity) throw "invalid signature or issuance";
+  return validity.r;
 };
 
 

@@ -94,8 +94,8 @@ const getApplePublicKey = async (kid) => {
   const url = new URL(ENDPOINT_URL);
   url.pathname = '/auth/keys';
 
-  const data = await request({ url: url.toString(), method: 'GET' });
-  const key = JSON.parse(data).keys.find(key => key.kid === kid);
+  const data = await request({ url: url.toString(), method: 'GET', json: true });  
+  const key = data.keys.find(key => key.kid === kid);
   if (!key) throw new Error("Can't find apple public key");;
 
   const pubKey = new NodeRSA();

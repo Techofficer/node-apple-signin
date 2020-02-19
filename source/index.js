@@ -1,12 +1,17 @@
 const { URL } = require('url');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const NodeRSA = require('node-rsa');
+const jwksRsa = require('jwks-rsa');
 const request = require('request-promise-native');
 
 const ENDPOINT_URL = 'https://appleid.apple.com';
 const DEFAULT_SCOPE = 'email';
 const TOKEN_ISSUER = 'https://appleid.apple.com';
+
+const jwksClient = jwksRsa({
+  jwksUri: ENDPOINT_URL + '/auth/keys',
+  cache: true
+});
 
 const getAuthorizationUrl = (options = {}) => {
   if (!options.clientID) throw Error('clientID is empty');
@@ -90,29 +95,31 @@ const refreshAuthorizationToken = async (refreshToken, options) => {
   return JSON.parse(body);
 };
 
-const getApplePublicKey = async () => {
-  const url = new URL(ENDPOINT_URL);
-  url.pathname = '/auth/keys';
-
-  const data = await request({ url: url.toString(), method: 'GET' });
-  const key = JSON.parse(data).keys[0];
-
-  const pubKey = new NodeRSA();
-  pubKey.importKey({ n: Buffer.from(key.n, 'base64'), e: Buffer.from(key.e, 'base64') }, 'components-public');
-  return pubKey.exportKey(['public']);
-};
+const getAppleSigningKey = (kid) => {
+  return new Promise((resolve, reject) => {
+    jwksClient.getSigningKey(kid, (err, key) => {
+      if (err) {
+        reject(err);        
+      } else {
+        resolve(key);
+      }
+    });
+  });
+}
 
 const verifyIdToken = async (idToken, clientID) => {
-  const applePublicKey = await getApplePublicKey();
-  const jwtClaims = jwt.verify(idToken, applePublicKey, { algorithms: 'RS256' });
-
-  if (jwtClaims.iss !== TOKEN_ISSUER) throw new Error('id token not issued by correct OpenID provider - expected: ' + TOKEN_ISSUER + ' | from: ' + jwtClaims.iss);
-  if (clientID !== undefined && jwtClaims.aud !== clientID) throw new Error('aud parameter does not include this client - is: ' + jwtClaims.aud + '| expected: ' + clientID);
-  if (jwtClaims.exp < (Date.now() / 1000)) throw new Error('id token has expired');
+  const decodedIdToken = jwt.decode(idToken, { complete: true });
+  const { kid, alg } = decodedIdToken.header;
+  const key = await getAppleSigningKey(kid);
+  const publicKey = key.getPublicKey();
+  const jwtClaims = jwt.verify(idToken, publicKey, {
+    issuer: TOKEN_ISSUER,
+    audience: clientID,
+    algorithms: [alg]
+  });  
 
   return jwtClaims;
 };
-
 
 module.exports = {
   getAuthorizationUrl,

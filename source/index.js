@@ -1,7 +1,7 @@
 const { URL } = require('url');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const jwksRsa = require('jwks-rsa-promisified');
+const jwksRsa = require('jwks-rsa');
 const request = require('request-promise-native');
 
 const ENDPOINT_URL = 'https://appleid.apple.com';
@@ -95,12 +95,24 @@ const refreshAuthorizationToken = async (refreshToken, options) => {
   return JSON.parse(body);
 };
 
+const getAppleSigningKey = (kid) => {
+  return new Promise((resolve, reject) => {
+    jwksClient.getSigningKey(kid, (err, key) => {
+      if (err) {
+        reject(err);        
+      } else {
+        resolve(key);
+      }
+    });
+  });
+}
+
 const verifyIdToken = async (idToken, clientID) => {
   const decodedIdToken = jwt.decode(idToken, { complete: true });
   const { kid, alg } = decodedIdToken.header;
-  const key = await jwksClient.getSigningKeyAsync(kid);
-  const signingKey = key.publicKey || key.rsaPublicKey;
-  const jwtClaims = jwt.verify(idToken, signingKey, {
+  const key = await getAppleSigningKey(kid);
+  const publicKey = key.getPublicKey();
+  const jwtClaims = jwt.verify(idToken, publicKey, {
     issuer: TOKEN_ISSUER,
     audience: clientID,
     algorithms: [alg]

@@ -54,7 +54,6 @@ const getClientSecret = options => {
 
 const getAuthorizationToken = async (code, options) => {
   if (!options.clientID) throw new Error('clientID is empty');
-  if (!options.redirectUri) throw new Error('redirectUri is empty');
   if (!options.clientSecret) throw new Error('clientSecret is empty');
 
   const url = new URL(ENDPOINT_URL);

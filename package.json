@@ -2,8 +2,31 @@
   "name": "apple-signin",
   "version": "1.0.9",
   "description": "Node.JS wrapper around Sign In with Apple REST API",
+  "main": "lib/apple-sign-in.js",
+  "module": "lib/apple-sign-in.js",
+  "types": "lib/apple-sign-in.d.ts",
+  "sideEffects": false,
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format:fix": "prettier --write ./src",
+    "format:check": "prettier --check ./src",
+    "lint:fix": "todo",
+    "link:check": "todo",
+    "docs": "npm run docs:clear && npm run docs:generate",
+    "docs:clear": "rm -rf ./docs",
+    "docs:generate": "typedoc --plugin none --mode library --theme node_modules/typedoc-neo-theme/bin/default --out ./docs/ ./src/apple-sign-in.ts --readme none",
+    "docs:generate-markdown": "typedoc --plugin typedoc-plugin-markdown --mode library --out ./docs/ ./src/apple-sign-in.ts --readme none",
+    "docs:concate-maybe-in-future": "npx concat-md --decrease-title-levels --dir-name-as-title docs > README.md",
+    "docs:serve": "npm run docs && npx http-server ./docs",
+    "build": "npm run build:clean && npm run build:files",
+    "build:clean": "rm -rf ./lib",
+    "build:files": "tsc --declarationDir lib --outDir lib"
   },
   "keywords": [
     "apple",
@@ -14,34 +37,35 @@
     "authentication"
   ],
   "author": {
-    "name": "Artem Efremov",
-    "email": "efremov.artserg@gmail.com",
-    "url": "https://gotechmakers.com"
+    "name": "Renārs Vilnis",
+    "email": "renars.vilnis@gmail.com",
+    "url": "http://renarsvilnis.com/"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Techofficer/node-apple-signin.git"
+    "url": "git://git@github.com:renarsvilnis/node-apple-signin.git"
   },
   "bugs": {
-    "url": "https://github.com/Techofficer/node-apple-signin/issues"
+    "url": "https://github.com/renarsvilnis/node-apple-signin/issues"
   },
   "license": "MIT",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
-    }
-  ],
   "dependencies": {
+    "axios": "0.19.2",
     "jsonwebtoken": "^8.5.1",
-    "node-rsa": "^1.0.5",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
+    "node-rsa": "^1.0.7"
   },
-  "main": "./source",
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.3"
+    "@types/jsonwebtoken": "8.3.8",
+    "@types/node": "12.12.31",
+    "@types/node-rsa": "1.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "prettier": "2.0.2",
+    "ts-node": "8.8.1",
+    "typedoc": "0.17.0-3",
+    "typedoc-neo-theme": "1.0.7",
+    "typedoc-plugin-markdown": "2.2.17",
+    "typescript": "3.8.3"
   }
 }

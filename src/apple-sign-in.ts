@@ -145,11 +145,10 @@ export async function getAuthorizationToken(
   options: {
     clientId: string;
     clientSecret: string;
-    redirectUri: string;
+    redirectUri?: string;
   }
 ): Promise<TokenResponse> {
   if (!options.clientId) throw new Error("clientId is empty");
-  if (!options.redirectUri) throw new Error("redirectUri is empty");
   if (!options.clientSecret) throw new Error("clientSecret is empty");
 
   const url = new URL(ENDPOINT_URL);

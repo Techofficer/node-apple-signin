@@ -59,15 +59,15 @@ export interface ClientSecretOptionsBase {
    */
   expirationDuration?: number;
 }
-export type ClientSecretOptionsWithPath = ClientSecretOptionsBase & {
+export interface ClientSecretOptionsWithPath extends ClientSecretOptionsBase {
   /**
    * Path to private key file
    */
   privateKeyPath: string;
-};
-export type ClientSecretOptions = ClientSecretOptionsBase & {
+}
+export interface ClientSecretOptions extends ClientSecretOptionsBase {
   privateKey: string;
-};
+}
 
 export function createClientSecret(options: ClientSecretOptions): string {
   if (!options.clientId) throw new Error("clientId is empty");
@@ -128,15 +128,25 @@ export function createClientSecretFromPath(
  * @link https://developer.apple.com/documentation/sign_in_with_apple/tokenresponse
  */
 export interface TokenResponse {
-  // (Reserved for future use) A token used to access allowed data. Currently, no data set has been defined for access.
+  /**
+   * (Reserved for future use) A token used to access allowed data. Currently, no data set has been defined for access.
+   */
   access_token: string;
-  // The amount of time, in seconds, before the access token expires.
+  /**
+   * The amount of time, in seconds, before the access token expires.
+   */
   expires_in: number;
-  // A JSON Web Token that contains the user’s identity information.
+  /**
+   * A JSON Web Token that contains the user’s identity information.
+   */
   id_token: string;
-  // The refresh token used to regenerate new access tokens. Store this token securely on your server.
+  /**
+   * The refresh token used to regenerate new access tokens. Store this token securely on your server.
+   */
   refresh_token: string;
-  // The type of access token. It will always be bearer.
+  /**
+   * The type of access token. It will always be bearer.
+   */
   token_type: string;
 }
 
@@ -203,17 +213,29 @@ export async function refreshAuthorizationToken(
  * @link https://developer.apple.com/documentation/sign_in_with_apple/jwkset/keys
  */
 interface JwkKey {
-  // The encryption algorithm used to encrypt the token.
+  /**
+   * The encryption algorithm used to encrypt the token.
+   */
   alg: string;
-  // The exponent value for the RSA public key.
+  /**
+   * The exponent value for the RSA public key.
+   */
   e: string;
-  // A 10-character identifier key, obtained from your developer account.
+  /**
+   * A 10-character identifier key, obtained from your developer account.
+   */
   kid: string;
-  // The key type parameter setting. This must be set to "RSA".
+  /**
+   * The key type parameter setting. This must be set to "RSA".
+   */
   kty: string;
-  // The modulus value for the RSA public key.
+  /**
+   * The modulus value for the RSA public key.
+   */
   n: string;
-  // The intended use for the public key.
+  /**
+   * The intended use for the public key.
+   */
   use: string;
 }
 

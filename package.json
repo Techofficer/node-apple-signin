@@ -19,7 +19,7 @@
     "format": "eslint 'src/**/*.{js,ts}' --fix",
     "docs": "npm run docs:clear && npm run docs:generate",
     "docs:clear": "rm -rf ./docs",
-    "docs:generate": "typedoc --plugin none --mode library --theme node_modules/typedoc-neo-theme/bin/default --out ./docs/ ./src/apple-sign-in.ts --readme none",
+    "docs:generate": "typedoc --plugin none --mode library --theme minimal node_modules/typedoc-neo-theme/bin/default --out ./docs/ ./src/apple-sign-in.ts --readme none",
     "docs:generate-markdown": "typedoc --plugin typedoc-plugin-markdown --mode library --out ./docs/ ./src/apple-sign-in.ts --readme none",
     "docs:concate-maybe-in-future": "npx concat-md --decrease-title-levels --dir-name-as-title docs > README.md",
     "docs:serve": "npm run docs && npx http-server ./docs"
@@ -73,7 +73,6 @@
     "prettier": "2.0.2",
     "ts-node": "8.8.1",
     "typedoc": "0.17.0-3",
-    "typedoc-neo-theme": "1.0.7",
     "typescript": "3.8.3"
   }
 }

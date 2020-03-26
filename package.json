@@ -22,7 +22,8 @@
     "docs:generate": "typedoc --plugin none --mode library --theme minimal node_modules/typedoc-neo-theme/bin/default --out ./docs/ ./src/apple-sign-in.ts --readme none",
     "docs:generate-markdown": "typedoc --plugin typedoc-plugin-markdown --mode library --out ./docs/ ./src/apple-sign-in.ts --readme none",
     "docs:concate-maybe-in-future": "npx concat-md --decrease-title-levels --dir-name-as-title docs > README.md",
-    "docs:serve": "npm run docs && npx http-server ./docs"
+    "docs:serve": "npm run docs && npx http-server ./docs",
+    "prepublishOnly": "npm run lint -- --quiet && npm run build"
   },
   "keywords": [
     "apple",

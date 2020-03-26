@@ -2,10 +2,10 @@ import { URL } from "url";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import NodeRSA from "node-rsa";
-import axios from 'axios';
+import axios from "axios";
 
 const ENDPOINT_URL = "https://appleid.apple.com";
-// FIXME: Implement this change: https://github.com/Techofficer/node-apple-signin/pull/3 
+// FIXME: Implement this change: https://github.com/Techofficer/node-apple-signin/pull/3
 // const DEFAULT_SCOPE = "email";
 const TOKEN_ISSUER = "https://appleid.apple.com";
 
@@ -37,7 +37,7 @@ export function getAuthorizationUrl(options: {
 }
 
 /**
- * As per apple docs the max duration a client secret claim can last 
+ * As per apple docs the max duration a client secret claim can last
  * @link https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens#3262048
  */
 const MAX_CLAIM_DURATION_SECONDS = 15777000;
@@ -61,53 +61,23 @@ export interface ClientSecretOptionsBase {
 }
 export type ClientSecretOptionsWithPath = ClientSecretOptionsBase & {
   /**
-  * Path to private key file
-  */
+   * Path to private key file
+   */
   privateKeyPath: string;
 };
 export type ClientSecretOptions = ClientSecretOptionsBase & {
   privateKey: string;
 };
 
-/**
- * Factory function that helps to create the client secret instead of passing the private key directly but from a file path
- * @param options 
- */
-export function createClientSecretFromPath (options: ClientSecretOptionsWithPath) {
-  if (!options.privateKeyPath) {
-    throw new Error('Missing privateKeyPath options');
-  }
-
-  if (!fs.existsSync(options.privateKeyPath)) {
-    throw new Error("Can't find private key for given path");
-  }
-
-  const privateKey = fs.readFileSync(options.privateKeyPath, 'utf-8');
-
-  if (!privateKey) {
-    throw new Error('Empty key found at given privateKeyPath');
-  }
-
-  return createClientSecret({
-    clientId: options.clientId,
-    teamId: options.teamId,
-    keyIdentifier: options.keyIdentifier,
-    expirationDuration: options.expirationDuration,
-    privateKey: privateKey
-  })
-}
-
 export function createClientSecret(options: ClientSecretOptions): string {
   if (!options.clientId) throw new Error("clientId is empty");
   if (!options.teamId) throw new Error("teamId is empty");
   if (!options.keyIdentifier) throw new Error("keyIdentifier is empty");
-  if (!options.privateKey) throw new Error('privateKey is empty');
-
-  options.expirationDuration
+  if (!options.privateKey) throw new Error("privateKey is empty");
 
   const claimDurationSeconds = options.expirationDuration || MAX_CLAIM_DURATION_SECONDS;
   if (claimDurationSeconds > MAX_CLAIM_DURATION_SECONDS) {
-    throw new Error('Claim duration can\t exceed 6 months');
+    throw new Error("Claim duration can\t exceed 6 months");
   }
 
   const timeNowSeconds = Math.floor(Date.now() / 1000);
@@ -117,10 +87,40 @@ export function createClientSecret(options: ClientSecretOptions): string {
     iat: timeNowSeconds,
     exp: timeNowSeconds + claimDurationSeconds,
     aud: ENDPOINT_URL,
-    sub: options.clientId
+    sub: options.clientId,
   };
   const header = { alg: "ES256", kid: options.keyIdentifier };
   return jwt.sign(claims, options.privateKey, { algorithm: "ES256", header });
+}
+
+/**
+ * Factory function that helps to create the client secret instead of passing the private key directly but from a file path
+ * @param options
+ */
+export function createClientSecretFromPath(
+  options: ClientSecretOptionsWithPath
+): ReturnType<typeof createClientSecret> {
+  if (!options.privateKeyPath) {
+    throw new Error("Missing privateKeyPath options");
+  }
+
+  if (!fs.existsSync(options.privateKeyPath)) {
+    throw new Error("Can't find private key for given path");
+  }
+
+  const privateKey = fs.readFileSync(options.privateKeyPath, "utf-8");
+
+  if (!privateKey) {
+    throw new Error("Empty key found at given privateKeyPath");
+  }
+
+  return createClientSecret({
+    clientId: options.clientId,
+    teamId: options.teamId,
+    keyIdentifier: options.keyIdentifier,
+    expirationDuration: options.expirationDuration,
+    privateKey: privateKey,
+  });
 }
 
 /**
@@ -155,11 +155,15 @@ export async function getAuthorizationToken(
   url.pathname = "/auth/token";
 
   const data = {
+    // eslint-disable-next-line @typescript-eslint/camelcase
     client_id: options.clientId,
+    // eslint-disable-next-line @typescript-eslint/camelcase
     client_secret: options.clientSecret,
     code,
+    // eslint-disable-next-line @typescript-eslint/camelcase
     grant_type: "authorization_code",
-    redirect_uri: options.redirectUri
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    redirect_uri: options.redirectUri,
   };
 
   const response = await axios(url.toString(), { method: "post", data });
@@ -172,7 +176,7 @@ export async function refreshAuthorizationToken(
     clientId: string;
     clientSecret: string;
   }
-) {
+): Promise<TokenResponse> {
   if (!options.clientId) throw new Error("clientId is empty");
   if (!options.clientSecret) throw new Error("clientSecret is empty");
 
@@ -180,14 +184,18 @@ export async function refreshAuthorizationToken(
   url.pathname = "/auth/token";
 
   const data = {
+    // eslint-disable-next-line @typescript-eslint/camelcase
     client_id: options.clientId,
+    // eslint-disable-next-line @typescript-eslint/camelcase
     client_secret: options.clientSecret,
+    // eslint-disable-next-line @typescript-eslint/camelcase
     refresh_token: refreshToken,
-    grant_type: "refresh_token"
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    grant_type: "refresh_token",
   };
 
   const response = await axios(url.toString(), { method: "post", data });
-  return response.data;
+  return response.data as TokenResponse;
 }
 
 /**
@@ -217,7 +225,7 @@ export async function getApplePublicKeys(): Promise<string[]> {
   const response = await axios(url.toString());
   const keys = response.data as JwkKey[];
 
-  const publicKeys = keys.map(key => {
+  const publicKeys = keys.map((key) => {
     // TODO: Not sure if i need to create a new NodeRSA for each?
     const pubKey = new NodeRSA();
     // TODO: what is 'components-public'?
@@ -228,11 +236,14 @@ export async function getApplePublicKeys(): Promise<string[]> {
   return publicKeys;
 }
 
-export async function verifyIdToken(idToken: string, clientId: string) {
+// TODO: improve typing
+export async function verifyIdToken(idToken: string, clientId: string): Promise<any> {
   const applePublicKeys = await getApplePublicKeys();
   // TODO: add multiple key support
   const applePublicKey = applePublicKeys[0];
-  const jwtClaims = jwt.verify(idToken, applePublicKey, { algorithms: ["RS256"] }) as any;
+  const jwtClaims = jwt.verify(idToken, applePublicKey, {
+    algorithms: ["RS256"],
+  }) as any;
 
   if (typeof jwtClaims === "string") {
     throw new Error("Invalid jwtClaims");

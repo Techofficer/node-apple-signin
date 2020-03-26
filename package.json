@@ -26,12 +26,22 @@
     "prepublishOnly": "npm run lint -- --quiet && npm run build"
   },
   "keywords": [
-    "apple",
     "signin",
+    "sign-in",
+    "apple",
+    "apple-id",
+    "apple-signin",
+    "apple-sign-in",
+    "authentication",
+    "apple-authentication",
     "auth",
+    "apple-auth",
     "login",
+    "apple-login",
     "node",
-    "authentication"
+    "sso",
+    "apple-sso",
+    "identity"
   ],
   "author": {
     "name": "Renārs Vilnis",

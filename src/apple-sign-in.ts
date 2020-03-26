@@ -5,18 +5,25 @@ import NodeRSA from "node-rsa";
 import axios from "axios";
 
 const ENDPOINT_URL = "https://appleid.apple.com";
-// FIXME: Implement this change: https://github.com/Techofficer/node-apple-signin/pull/3
-// const DEFAULT_SCOPE = "email";
 const TOKEN_ISSUER = "https://appleid.apple.com";
 
 export function getAuthorizationUrl(options: {
   clientId: string;
   redirectUri: string;
-  scope?: string;
+  /**
+   * The amount of user information requested from Apple.
+   *
+   * You can request the user’s "name" or "email". You can also choose to request both, or neither.
+   * Ommiting the property or providing any empty won't request any scopes.
+   *
+   * @link https://developer.apple.com/documentation/sign_in_with_apple/clientconfigi/3230955-scope
+   */
+  scope?: "name" | "email"[];
   state?: string;
 }): string {
   if (!options.clientId) throw Error("clientId is empty");
   if (!options.redirectUri) throw Error("redirectUri is empty");
+  if (options.scope && !Array.isArray(options.scope)) throw new Error("scope must be an array");
 
   const url = new URL(ENDPOINT_URL);
   url.pathname = "/auth/authorize";
@@ -27,17 +34,20 @@ export function getAuthorizationUrl(options: {
   url.searchParams.append("client_id", options.clientId);
   url.searchParams.append("redirect_uri", options.redirectUri);
 
+  // TODO: found out why openid was used initialy, can't find any apple docs mentioning it.
+  //       https://forums.developer.apple.com/thread/119502
   if (options.scope) {
-    url.searchParams.append("scope", "openid " + options.scope);
-  } else {
-    url.searchParams.append("scope", "openid");
+    // url.searchParams.append("scope", "openid " + options.scope.join(" "));
+    url.searchParams.append("scope", options.scope.join(" "));
+    // } else {
+    //   url.searchParams.append("scope", "openid");
   }
 
   return url.toString();
 }
 
 /**
- * As per apple docs the max duration a client secret claim can last
+ * As per apple docs the max duration a client secret claim can last.
  * @link https://developer.apple.com/documentation/sign_in_with_apple/generate_and_validate_tokens#3262048
  */
 const MAX_CLAIM_DURATION_SECONDS = 15777000;

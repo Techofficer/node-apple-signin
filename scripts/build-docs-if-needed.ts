@@ -17,7 +17,7 @@ console.log("📕 Checking if need to build docs.");
 const SOURCE_FILE_PATH = "src/";
 const shouldBuildDocs = hasGitStagedFilesFromPath(SOURCE_FILE_PATH);
 
-if (shouldBuildDocs) {
+if (process.env.FORCE_DOCS === "true" || shouldBuildDocs) {
   console.log("📕 Found staged changes to source files, build docs and adding docs to commit");
   execSync("npm run docs", { stdio: "inherit" });
   execSync("git add ./docs", { stdio: "inherit" });

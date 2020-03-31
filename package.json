@@ -24,6 +24,7 @@
     "docs:generate-markdown": "typedoc --plugin typedoc-plugin-markdown --mode library --out ./docs/ ./src/apple-sign-in.ts --readme none",
     "docs:concate-maybe-in-future": "npx concat-md --decrease-title-levels --dir-name-as-title docs > README.md",
     "docs:serve": "npm run docs && npx http-server ./docs",
+    "docs:pre-commit": "ts-node ./scripts/build-docs-if-needed.ts",
     "prepublishOnly": "npm run lint -- --quiet && npm run test && npm run build"
   },
   "keywords": [
@@ -63,7 +64,7 @@
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint -- --quiet && npm run test && npm run docs && git add ./docs && git add -u ./docs"
+      "pre-commit": "npm run lint -- --quiet && npm run test && npm run docs:pre-commit"
     }
   },
   "dependencies": {

@@ -2,46 +2,96 @@
   "name": "apple-signin",
   "version": "1.0.9",
   "description": "Node.JS wrapper around Sign In with Apple REST API",
+  "main": "lib/AppleSignIn.js",
+  "module": "lib/AppleSignIn.js",
+  "types": "lib/AppleSignIn.d.ts",
+  "sideEffects": false,
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rm -rf ./lib && tsc --declarationDir lib --outDir lib",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "tsc --noEmit && eslint 'src/**/*.{js,ts}'",
+    "format": "eslint 'src/**/*.{js,ts}' --fix",
+    "docs": "npm run docs:clear && npm run docs:generate",
+    "docs:clear": "rm -rf ./docs",
+    "docs:generate": "typedoc --plugin none --mode library --theme minimal node_modules/typedoc-neo-theme/bin/default --out ./docs/ ./src/AppleSignIn.ts --readme none",
+    "docs:generate-markdown": "typedoc --plugin typedoc-plugin-markdown --mode library --out ./docs/ ./src/apple-sign-in.ts --readme none",
+    "docs:concate-maybe-in-future": "npx concat-md --decrease-title-levels --dir-name-as-title docs > README.md",
+    "docs:serve": "npm run docs && npx http-server ./docs",
+    "docs:pre-commit": "ts-node ./scripts/build-docs-if-needed.ts",
+    "prepublishOnly": "npm run lint -- --quiet && npm run test && npm run build"
   },
   "keywords": [
-    "apple",
     "signin",
+    "sign-in",
+    "sign-in-with-apple",
+    "siwa",
+    "apple",
+    "apple-id",
+    "apple-signin",
+    "apple-sign-in",
+    "authentication",
+    "apple-authentication",
     "auth",
+    "apple-auth",
     "login",
+    "apple-login",
     "node",
-    "authentication"
+    "sso",
+    "apple-sso",
+    "identity",
+    "node",
+    "typescript"
   ],
   "author": {
-    "name": "Artem Efremov",
-    "email": "efremov.artserg@gmail.com",
-    "url": "https://gotechmakers.com"
+    "name": "Renārs Vilnis",
+    "email": "renars.vilnis@gmail.com",
+    "url": "http://renarsvilnis.com/"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Techofficer/node-apple-signin.git"
+    "url": "git://git@github.com:renarsvilnis/node-apple-signin.git"
   },
   "bugs": {
-    "url": "https://github.com/Techofficer/node-apple-signin/issues"
+    "url": "https://github.com/renarsvilnis/node-apple-signin/issues"
   },
   "license": "MIT",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint -- --quiet && npm run test && npm run docs:pre-commit"
     }
-  ],
-  "dependencies": {
-    "jsonwebtoken": "^8.5.1",
-    "node-rsa": "^1.0.5",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.7"
   },
-  "main": "./source",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.7.0"
+  },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.3"
+    "@types/jest": "25.1.4",
+    "@types/jsonwebtoken": "8.3.8",
+    "@types/node": "12.12.31",
+    "@typescript-eslint/eslint-plugin": "2.25.0",
+    "@typescript-eslint/parser": "2.25.0",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.1",
+    "eslint-config-standard": "14.1.1",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-node": "11.0.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1",
+    "husky": "4.2.3",
+    "jest": "25.2.3",
+    "prettier": "2.0.2",
+    "ts-jest": "25.2.1",
+    "ts-node": "8.8.1",
+    "typedoc": "0.17.0-3",
+    "typescript": "3.8.3"
   }
 }

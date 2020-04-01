@@ -34,6 +34,8 @@
     "apple-id",
     "apple-signin",
     "apple-sign-in",
+    "apple-sign-in-auth",
+    "apple-signin-auth",
     "authentication",
     "apple-authentication",
     "auth",

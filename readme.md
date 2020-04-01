@@ -1,27 +1,29 @@
 # Sign in with Apple
 
-Hopefully your go-to library for implementing [*Sign In With Apple Rest API*](https://developer.apple.com/documentation/sign_in_with_apple) in Node.js
+Hopefully your go-to library for implementing [_Sign In With Apple Rest API_](https://developer.apple.com/documentation/sign_in_with_apple) in Node.js.
 
-> See comparison table(<todo-link>) why  you should choose <this-package>  over other `apple-xxx` package.
+> See [comparison table](https://github.com/renarsvilnis/apple-sign-in#comparison-to-other-apple-sign-in-libraries) why you should choose `apple-sign-in` over other `apple-xxx` package.
+
+Supports Node.js `>= 10.x.x`
 
 ## Installation
 
 Install the module using [npm](http://npmjs.com):
 
 ```bash
-npm install --save apple-signin
+npm install --save apple-sign-in
+yarn add apple-sign-in
 ```
-
-
 
 ## Documentation
 
->  Library is built on typescript and has well documented source code. This will provide a zero-effort developer expierence within your existing code editors. But the library also provides autogenered documentation using [typedoc](https://typedoc.org/).
+Library is built on typescript and has well documented source code. This will provide a zero-effort developer expierence within your existing code editors. But the library also provides autogenered documentation using [typedoc](https://typedoc.org/).
 
-- [Full Documentation](https://renarsvilnis.github.io/node-apple-signin/modules/_applesignin_.html) 
+- [Full Documentation](https://renarsvilnis.github.io/apple-sign-in/modules/_applesignin_.html)
 
 ## Usage
 
+<TODO-update-usage-docs>
 
 ### 0. Prerequisites
 
@@ -54,7 +56,7 @@ Alternatively, you can use [Sign In with Apple](https://developer.apple.com/docu
 ### 2. Get access token
 
 2.1. Retrieve "code" query param from URL string when user is redirected to your site after successful sign in with Apple. Example:
-http://localhost:3000/auth/apple/callback?code=somecode&state=123.
+[http://localhost:3000/auth/apple/callback?code=somecode&state=123](http://localhost:3000/auth/apple/callback?code=somecode&state=123).
 
 2.2. Exchange retrieved "code" to user's access token.
 
@@ -99,8 +101,6 @@ Result of `getAuthorizationToken` command is a JSON object representing Apple's 
 ### 3. Verify token signature and get unique user's identifier
 
 ```javascript
-// TODO: add documentation to compare state
-
 appleSignin
   .verifyIdToken(tokenResponse.id_token, clientID)
   .then((result) => {
@@ -137,44 +137,32 @@ appleSignin
   });
 ```
 
-## Examples
+<!-- ## Examples
 
-Developers using the popular [Express](http://expressjs.com) web framework can refer to an [example](https://github.com/Techofficer/express-apple-signin) as a starting point for their own web applications.
+Developers using the popular [Express](http://expressjs.com) web framework can refer to an [example](https://github.com/Techofficer/express-apple-signin) as a starting point for their own web applications. -->
 
+## Comparison to other "apple sign in" libraries
 
-
-## Reason to choose <this-packege> over others
-
-There are many already packages on npm with very similar names. Most of them are missing featuers  and/or abandoned. <this-package> takes inspiration from `apple-signin` and implements features/fixes while comparing to other libraries.
-
-
+There are many already packages on npm with very similar names. Most of them are missing featuers and/or abandoned. This package takes inspiration from `apple-signin` and implements features/fixes while comparing to other libraries.
 
 The only other library I'd consider feature-full and ready to use besides this one is [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth) by [A-Tokyo](https://github.com/A-Tokyo), seem to have missing key features.
 
-
-
-|                               | <this-package>                                               | [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth) | [apple-auth](https://github.com/ananay/apple-auth)           | [apple-signin](https://github.com/Techofficer/node-apple-signin) |
-| ----------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Feature Full                  | ✅                                                            | ✅ (missing some minor options)                               | ❌                                                            | ❌                                                            |
-| Apple Public Key Caching      | ✅ (cache per class instance)                                 | ✅ (global cache)                                             | ❌                                                            | ❌                                                            |
-| Passport.js library           | ❌ (comming-soon)                                             | ❌                                                            | ✅                                                            | ✅                                                            |
-| Typed Support                 | ✅ (typescript based)                                         | ✅ (flow based)                                               | ❌                                                            | ❌                                                            |
-| API Documentation             | ✅ (auto generated docs using [typedoc](https://typedoc.org/)) | ❌                                                            | ❌                                                            | ❌                                                            |
-| Usage Examples                | ✅                                                            | ✅                                                            | ✅                                                            | ✅                                                            |
-| Tools for easier contributors | ✅ (typescript, eslint, prettier, jest)                       | ✅ (flow, eslint, prettier, jest)                             | ❌                                                            | ❌                                                            |
-| Stats                         | <TODO-ADD-ONCE-PUBLICHED>                                    | [![NPM](https://nodei.co/npm/apple-signin-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-signin-auth/) | [![NPM](https://nodei.co/npm/apple-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-auth/) | [![NPM](https://nodei.co/npm/apple-signin.png)](https://nodei.co/npm/apple-signin/) |
-
-
+|                               | apple-sign-in                                                  | [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth)                                                                         | [apple-auth](https://github.com/ananay/apple-auth)                                                                          | [apple-signin](https://github.com/Techofficer/node-apple-signin)                    |
+| ----------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Feature Full                  | ✅                                                             | ✅ (missing some minor options)                                                                                                           | ❌                                                                                                                          | ❌                                                                                  |
+| Apple Public Key Caching      | ✅ (cache per class instance)                                  | ✅ (global cache)                                                                                                                         | ❌                                                                                                                          | ❌                                                                                  |
+| Passport.js library           | ❌ (comming-soon)                                              | ❌                                                                                                                                        | ✅                                                                                                                          | ✅                                                                                  |
+| Typed Support                 | ✅ (typescript based)                                          | ✅ (flow based)                                                                                                                           | ❌                                                                                                                          | ❌                                                                                  |
+| API Documentation             | ✅ (auto generated docs using [typedoc](https://typedoc.org/)) | ❌                                                                                                                                        | ❌                                                                                                                          | ❌                                                                                  |
+| Usage Examples                | ✅                                                             | ✅                                                                                                                                        | ✅                                                                                                                          | ✅                                                                                  |
+| Tools for easier contributors | ✅ (typescript, eslint, prettier, jest)                        | ✅ (flow, eslint, prettier, jest)                                                                                                         | ❌                                                                                                                          | ❌                                                                                  |
+| Stats                         | [![NPM](https://nodei.co/npm/apple-sign-in.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-sign-in/)                                    | [![NPM](https://nodei.co/npm/apple-signin-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-signin-auth/) | [![NPM](https://nodei.co/npm/apple-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-auth/) | [![NPM](https://nodei.co/npm/apple-signin.png)](https://nodei.co/npm/apple-signin/) |
 
 ## Contributing
 
-Pull requests are always welcomed. 🙇🏻‍♂️  Please open an issue first to discuss what you would like to change.
-
-
+Pull requests are always welcomed. 🙇🏻‍♂️ Please open an issue first to discuss what you would like to change.
 
 Package has a pre-commit git hook that does typechecking, linting, unit testing and doc building (if see source code changes).
-
-
 
 ### Helper scripts
 
@@ -198,11 +186,13 @@ npm run docs
 # Inspect documentation localy visit http://127.0.0.1:8080
 npm run docs:serve
 
-# By default docs are automatically built and added on pre-commit hook, if it sees staged changes to any /src files, you can override the logic by forcing to build docs by passing environmental
+# By default docs are automatically built and added on pre-commit hook,
+# if it sees staged changes to any /src files,
+# you can override the logic by forcing to build docs by passing environmental
 FORCE_DOCS=true git commit -m 'My awesome change'
 
 # Commit but ignore ship the git hooks
-git commit -m 'My awsome change' --no-verify
+git commit -m 'My awesome change' --no-verify
 ```
 
 ## License

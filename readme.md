@@ -1,5 +1,4 @@
-# `apple-sign-in-rest` - Sign in with Apple
-
+# `apple-sign-in-rest`
 Hopefully your go-to library for implementing [_Sign In With Apple Rest API_](https://developer.apple.com/documentation/sign_in_with_apple) in Node.js.
 
 > See [comparison table](https://github.com/renarsvilnis/apple-sign-in-rest#comparison-to-other-apple-sign-in-libraries) why you should choose `apple-sign-in-rest` over other `apple-xxx` package.

@@ -145,17 +145,19 @@ Developers using the popular [Express](http://expressjs.com) web framework can r
 
 ## Reason to choose <this-packege> over others
 
-> There are many libraries out now most of them aren't feature full and/or abandoned. <this-package> built from `apple-signin` but from the ground up.
+There are many already packages on npm with very similar names. Most of them are missing featuers  and/or abandoned. <this-package> takes inspiration from `apple-signin` and implements features/fixes while comparing to other libraries.
 
-The only other library I'd consider feature-full and ready to use is [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth) by [A-Tokyo](https://github.com/A-Tokyo). Others seem to have missing key feature.
+
+
+The only other library I'd consider feature-full and ready to use besides this one is [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth) by [A-Tokyo](https://github.com/A-Tokyo), seem to have missing key features.
 
 
 
 |                               | <this-package>                                               | [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth) | [apple-auth](https://github.com/ananay/apple-auth)           | [apple-signin](https://github.com/Techofficer/node-apple-signin) |
 | ----------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Feature Full                  | ✅                                                            | ✅ (missing some function options)                            | ❌                                                            | ❌                                                            |
+| Feature Full                  | ✅                                                            | ✅ (missing some minor options)                               | ❌                                                            | ❌                                                            |
 | Apple Public Key Caching      | ✅ (cache per class instance)                                 | ✅ (global cache)                                             | ❌                                                            | ❌                                                            |
-| Passport.js library           | ❌                                                            | ❌                                                            | ✅                                                            | ✅                                                            |
+| Passport.js library           | ❌ (comming-soon)                                             | ❌                                                            | ✅                                                            | ✅                                                            |
 | Typed Support                 | ✅ (typescript based)                                         | ✅ (flow based)                                               | ❌                                                            | ❌                                                            |
 | API Documentation             | ✅ (auto generated docs using [typedoc](https://typedoc.org/)) | ❌                                                            | ❌                                                            | ❌                                                            |
 | Usage Examples                | ✅                                                            | ✅                                                            | ✅                                                            | ✅                                                            |
@@ -166,9 +168,42 @@ The only other library I'd consider feature-full and ready to use is [apple-sign
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are always welcomed. 🙇🏻‍♂️  Please open an issue first to discuss what you would like to change.
 
-<TODO-add-guide>
+
+
+Package has a pre-commit git hook that does typechecking, linting, unit testing and doc building (if see source code changes).
+
+
+
+### Helper scripts
+
+```bash
+# Build library, will create a library in /lib folder
+npm run build
+
+# Run unit tests
+npm run test
+npm run test:watch # watch mode
+
+# Run typecheck and linter
+npm run lint
+
+# Attempts to fix all formatting and linting issues
+npm run format
+
+# Build docs
+npm run docs
+
+# Inspect documentation localy visit http://127.0.0.1:8080
+npm run docs:serve
+
+# By default docs are automatically built and added on pre-commit hook, if it sees staged changes to any /src files, you can override the logic by forcing to build docs by passing environmental
+FORCE_DOCS=true git commit -m 'My awesome change'
+
+# Commit but ignore ship the git hooks
+git commit -m 'My awsome change' --no-verify
+```
 
 ## License
 

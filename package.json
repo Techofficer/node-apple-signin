@@ -1,6 +1,6 @@
 {
   "name": "apple-signin",
-  "version": "1.0.9",
+  "version": "0.0.0",
   "description": "Node.JS wrapper around Sign In with Apple REST API",
   "main": "lib/AppleSignIn.js",
   "module": "lib/AppleSignIn.js",

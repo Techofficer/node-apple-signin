@@ -1,8 +1,8 @@
-# Sign in with Apple
+# `apple-sign-in-rest` - Sign in with Apple
 
 Hopefully your go-to library for implementing [_Sign In With Apple Rest API_](https://developer.apple.com/documentation/sign_in_with_apple) in Node.js.
 
-> See [comparison table](https://github.com/renarsvilnis/apple-sign-in#comparison-to-other-apple-sign-in-libraries) why you should choose `apple-sign-in` over other `apple-xxx` package.
+> See [comparison table](https://github.com/renarsvilnis/apple-sign-in-rest#comparison-to-other-apple-sign-in-libraries) why you should choose `apple-sign-in-rest` over other `apple-xxx` package.
 
 Supports Node.js `>= 10.x.x`
 
@@ -11,15 +11,15 @@ Supports Node.js `>= 10.x.x`
 Install the module using [npm](http://npmjs.com):
 
 ```bash
-npm install --save apple-sign-in
-yarn add apple-sign-in
+npm install --save apple-sign-in-rest
+yarn add apple-sign-in-rest
 ```
 
 ## Documentation
 
 Library is built on typescript and has well documented source code. This will provide a zero-effort developer expierence within your existing code editors. But the library also provides autogenered documentation using [typedoc](https://typedoc.org/).
 
-- [Full Documentation](https://renarsvilnis.github.io/apple-sign-in/modules/_applesignin_.html)
+- [Full Documentation](https://renarsvilnis.github.io/apple-sign-in-rest/modules/_applesignin_.html)
 
 ## Usage
 
@@ -39,17 +39,17 @@ Here are some usefull links to get started with Sign In with Apple:
 
 ### 1. Create a `AppleSignIn` instance
 
-Compared to other libraries `apple-sign-in` chooses to create an instance with credentials instead of passing same credentials to functions on each call. This allows the library to validate them once and create apple public key cache per instance.
+Compared to other libraries `apple-sign-in-rest` chooses to create an instance with credentials instead of passing same credentials to functions on each call. This allows the library to validate them once and create apple public key cache per instance.
 
 ```javascript
 // Using modules
-import AppleSignIn from 'apple-sign-in';
+import AppleSignIn from 'apple-sign-in-rest';
 // or if using common.js
-const AppleSignIn = require("apple-sign-in").default;
+const AppleSignIn = require("apple-sign-in-rest").default;
 
 /**
  * See docs for full list of options and descriptions:
- * https://renarsvilnis.github.io/apple-sign-in/classes/_applesignin_.applesignin.html#constructor
+ * https://renarsvilnis.github.io/apple-sign-in-rest/classes/_applesignin_.applesignin.html#constructor
  */
 const appleSignIn = new AppleSignIn({
   /**
@@ -79,7 +79,7 @@ Alternatively, you can use [Sign In with Apple](https://developer.apple.com/docu
 ```javascript
 /**
  * See docs for full list of options and descriptions:
- * https://renarsvilnis.github.io/apple-sign-in/classes/_applesignin_.applesignin.html#getauthorizationurl
+ * https://renarsvilnis.github.io/apple-sign-in-rest/classes/_applesignin_.applesignin.html#getauthorizationurl
  */
 const authorizationUrl = appleSignin.getAuthorizationUrl({
   scope: ["name", "email"],
@@ -121,7 +121,7 @@ In the case of iOS the native-app sends the `code` to a custom endpoint on your 
 ```javascript
 /**
  * See docs for full list of options and descriptions:
- * https://renarsvilnis.github.io/apple-sign-in/classes/_applesignin_.applesignin.html#createclientsecret
+ * https://renarsvilnis.github.io/apple-sign-in-rest/classes/_applesignin_.applesignin.html#createclientsecret
  */
 const clientSecret = appleSignIn.createClientSecret({
   /**
@@ -137,7 +137,7 @@ const clientSecret = appleSignIn.createClientSecret({
 ```javascript
 /**
  * See docs for full list of options and descriptions:
- * https://renarsvilnis.github.io/apple-sign-in/classes/_applesignin_.applesignin.html#getauthorizationtoken
+ * https://renarsvilnis.github.io/apple-sign-in-rest/classes/_applesignin_.applesignin.html#getauthorizationtoken
  */
 const tokenResponse = await appleSignIn.getAuthorizationToken(clientSecret, code, {
   // Optional, use the same value which you passed to authorisation URL. In case of iOS you skip the value
@@ -167,7 +167,7 @@ Result of `appleSignIn.getAuthorizationToken` command is a JSON object represent
 ```javascript
 /**
  * See docs for full list of options and descriptions:
- * https://renarsvilnis.github.io/apple-sign-in/classes/_applesignin_.applesignin.html#verifyidtoken
+ * https://renarsvilnis.github.io/apple-sign-in-rest/classes/_applesignin_.applesignin.html#verifyidtoken
  */
 const claim = await appleSignIn.verifyIdToken(tokenResponse.id_token, {
   // (Optional) verifies the nonce
@@ -186,7 +186,7 @@ const claim = await appleSignIn.verifyIdToken(tokenResponse.id_token, {
 ```javascript
 /**
  * See docs for full list of options and descriptions:
- * https://renarsvilnis.github.io/apple-sign-in/classes/_applesignin_.applesignin.html#refreshauthorizationtoken
+ * https://renarsvilnis.github.io/apple-sign-in-rest/classes/_applesignin_.applesignin.html#refreshauthorizationtoken
  */
 const refreshTokenResponse = await appleSignIn.refreshAuthorizationToken(clientSecret, refreshToken);
 const { access_token } = refreshTokenResponse.access_token;
@@ -194,20 +194,20 @@ const { access_token } = refreshTokenResponse.access_token;
 
 ## Comparison to other "apple sign in" libraries
 
-There are many already packages on npm with very similar names. Most of them are missing featuers and/or abandoned. This package takes inspiration from `apple-signin` and implements features/fixes while comparing to other libraries.
+There are many already packages on npm with very similar names. Most of them are missing features and/or abandoned. This package takes inspiration from `apple-signin` and implements features/fixes while comparing to other libraries.
 
 The only other library I'd consider feature-full and ready to use besides this one is [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth) by [A-Tokyo](https://github.com/A-Tokyo), seem to have missing key features.
 
-|                               | apple-sign-in                                                                                                                     | [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth)                                                                         | [apple-auth](https://github.com/ananay/apple-auth)                                                                          | [apple-signin](https://github.com/Techofficer/node-apple-signin)                    |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Feature Full                  | ✅                                                                                                                                | ✅ (missing some minor options)                                                                                                           | ❌                                                                                                                          | ❌                                                                                  |
-| Apple Public Key Caching      | ✅ (cache per class instance)                                                                                                     | ✅ (global cache)                                                                                                                         | ❌                                                                                                                          | ❌                                                                                  |
-| Passport.js library           | ❌ (comming-soon)                                                                                                                 | ❌                                                                                                                                        | ✅                                                                                                                          | ✅                                                                                  |
-| Typed Support                 | ✅ (typescript based)                                                                                                             | ✅ (flow based)                                                                                                                           | ❌                                                                                                                          | ❌                                                                                  |
-| API Documentation             | ✅ (auto generated docs using [typedoc](https://typedoc.org/))                                                                    | ❌                                                                                                                                        | ❌                                                                                                                          | ❌                                                                                  |
-| Usage Examples                | ✅                                                                                                                                | ✅                                                                                                                                        | ✅                                                                                                                          | ✅                                                                                  |
-| Tools for easier contributors | ✅ (typescript, eslint, prettier, jest)                                                                                           | ✅ (flow, eslint, prettier, jest)                                                                                                         | ❌                                                                                                                          | ❌                                                                                  |
-| Stats                         | [![NPM](https://nodei.co/npm/apple-sign-in.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-sign-in/) | [![NPM](https://nodei.co/npm/apple-signin-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-signin-auth/) | [![NPM](https://nodei.co/npm/apple-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-auth/) | [![NPM](https://nodei.co/npm/apple-signin.png)](https://nodei.co/npm/apple-signin/) |
+|                               | apple-sign-in-rest                                                                                                                          | [apple-signin-auth](https://github.com/A-Tokyo/apple-signin-auth)                                                                         | [apple-auth](https://github.com/ananay/apple-auth)                                                                          | [apple-signin](https://github.com/Techofficer/node-apple-signin)                    |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Feature Full                  | ✅                                                                                                                                          | ✅ (missing some minor options)                                                                                                           | ❌                                                                                                                          | ❌                                                                                  |
+| Apple Public Key Caching      | ✅ (cache per class instance)                                                                                                               | ✅ (global cache)                                                                                                                         | ❌                                                                                                                          | ❌                                                                                  |
+| Passport.js library           | ❌ (comming-soon)                                                                                                                           | ❌                                                                                                                                        | ✅                                                                                                                          | ✅                                                                                  |
+| Typed Support                 | ✅ (typescript based)                                                                                                                       | ✅ (flow based)                                                                                                                           | ❌                                                                                                                          | ❌                                                                                  |
+| API Documentation             | ✅ (auto generated docs using [typedoc](https://typedoc.org/))                                                                              | ❌                                                                                                                                        | ❌                                                                                                                          | ❌                                                                                  |
+| Usage Examples                | ✅                                                                                                                                          | ✅                                                                                                                                        | ✅                                                                                                                          | ✅                                                                                  |
+| Tools for easier contributors | ✅ (typescript, eslint, prettier, jest)                                                                                                     | ✅ (flow, eslint, prettier, jest)                                                                                                         | ❌                                                                                                                          | ❌                                                                                  |
+| Stats                         | [![NPM](https://nodei.co/npm/apple-sign-in-rest.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-sign-in-rest/) | [![NPM](https://nodei.co/npm/apple-signin-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-signin-auth/) | [![NPM](https://nodei.co/npm/apple-auth.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/apple-auth/) | [![NPM](https://nodei.co/npm/apple-signin.png)](https://nodei.co/npm/apple-signin/) |
 
 ## Contributing
 

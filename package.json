@@ -1,5 +1,5 @@
 {
-  "name": "apple-sign-in",
+  "name": "apple-sign-in-rest",
   "version": "0.0.0",
   "description": "Hopefully your go-to library for implementing Sign In With Apple in Node.js",
   "main": "lib/AppleSignIn.js",
@@ -35,6 +35,7 @@
     "apple-signin",
     "apple-sign-in",
     "apple-sign-in-auth",
+    "apple-sign-in-rest",
     "apple-signin-auth",
     "authentication",
     "apple-authentication",
@@ -56,10 +57,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://git@github.com:renarsvilnis/apple-sign-in.git"
+    "url": "git://git@github.com:renarsvilnis/apple-sign-in-rest.git"
   },
   "bugs": { 
-    "url": "https://github.com/renarsvilnis/apple-sign-in/issues"
+    "url": "https://github.com/renarsvilnis/apple-sign-in-rest/issues"
   },
   "license": "MIT",
   "husky": {

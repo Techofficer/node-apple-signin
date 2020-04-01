@@ -189,7 +189,10 @@ npm run docs:serve
 # By default docs are automatically built and added on pre-commit hook,
 # if it sees staged changes to any /src files,
 # you can override the logic by forcing to build docs by passing environmental
-FORCE_DOCS=true git commit -m 'My awesome change'
+DOCS_FORCE=true git commit -m 'My awesome change'
+
+# You also skip automatically adding docs to commit
+DOCS_COMMIT=false git commit -m 'My awesome change'
 
 # Commit but ignore ship the git hooks
 git commit -m 'My awesome change' --no-verify

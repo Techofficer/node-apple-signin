@@ -18,13 +18,13 @@
     "test:watch": "jest --watch",
     "lint": "tsc --noEmit && eslint 'src/**/*.{js,ts}'",
     "format": "eslint 'src/**/*.{js,ts}' --fix",
-    "docs": "npm run docs:clear && npm run docs:generate",
+    "docs": "ts-node ./scripts/build-docs-if-needed.ts",
     "docs:clear": "rm -rf ./docs",
     "docs:generate": "typedoc --plugin none --mode library --theme minimal node_modules/typedoc-neo-theme/bin/default --out ./docs/ ./src/AppleSignIn.ts --readme none --gitRevision master",
-    "docs:generate-markdown": "typedoc --plugin typedoc-plugin-markdown --mode library --out ./docs/ ./src/apple-sign-in.ts --readme none",
-    "docs:concate-maybe-in-future": "npx concat-md --decrease-title-levels --dir-name-as-title docs > README.md",
+    "docs:generate-markdown-unused": "typedoc --plugin typedoc-plugin-markdown --mode library --out ./docs/ ./src/apple-sign-in.ts --readme none",
+    "docs:concate-unused": "npx concat-md --decrease-title-levels --dir-name-as-title docs > README.md",
     "docs:serve": "npm run docs && npx http-server ./docs",
-    "docs:pre-commit": "ts-node ./scripts/build-docs-if-needed.ts",
+    "docs:pre-commit": "DOCS_COMMIT=true npm run docs",
     "prepublishOnly": "npm run lint -- --quiet && npm run test && npm run build"
   },
   "keywords": [

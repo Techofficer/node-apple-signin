@@ -18,12 +18,11 @@ function hasGitStagedFilesFromPath(folderPath: string): boolean {
  * Fixes issues where tpyedoc generate files startind with underscore aren't showing up in gh-pages
  * @link https://github.com/TypeStrong/typedoc/issues/620
  */
-function fixGhDocsNotShowingGnereatedHtmlFiles(): void {
+function fixGithubDocsNotShowingGeneratedHtmlFiles(): void {
   const configPath = path.join(__dirname, "../docs/_config.yml");
   const configContents = `include:
   - "_*_.html"
   - "_*_.*.html"`;
-  console.log(configPath, configContents);
   fs.writeFileSync(configPath, configContents, { encoding: "utf8" });
 }
 
@@ -31,18 +30,26 @@ console.log("📕 Checking if need to build docs.");
 
 const SOURCE_FILE_PATH = "src/";
 const shouldBuildDocs = hasGitStagedFilesFromPath(SOURCE_FILE_PATH);
-const forceBuild = process.env.FORCE_DOCS === "true";
+const forceBuild = process.env.DOCS_FORCE === "true";
+const stageDocsToGit = process.env.DOCS_COMMIT === "true";
 
 if (forceBuild || shouldBuildDocs) {
   if (forceBuild) {
-    console.log("📕 Force building docs regardles of source file state");
+    console.log("📕 Force building docs regardless of source file state");
   } else {
-    console.log("📕 Found staged changes to source files, build docs and adding docs to commit");
+    console.log("📕 Found staged changes to source files, building docs");
   }
-  execSync("npm run docs", { stdio: "inherit" });
-  fixGhDocsNotShowingGnereatedHtmlFiles();
-  execSync("git add ./docs", { stdio: "inherit" });
-  execSync("git add -u ./docs", { stdio: "inherit" });
+
+  execSync("npm run docs:clear", { stdio: "inherit" });
+  execSync("npm run docs:generate", { stdio: "inherit" });
+  fixGithubDocsNotShowingGeneratedHtmlFiles();
+
+  if (stageDocsToGit) {
+    console.log("📕 Adding docs to commit");
+    execSync("git add ./docs", { stdio: "inherit" });
+    execSync("git add -u ./docs", { stdio: "inherit" });
+  }
+
   process.exit(0);
 } else {
   console.log("📕 No staged changes found for source files, skipping building docs");

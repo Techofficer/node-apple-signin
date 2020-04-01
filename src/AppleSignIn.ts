@@ -370,7 +370,6 @@ export default class AppleSignIn {
   /**
    * Verify identity of a give JsonWebToken string.
    */
-  // TODO: add more options like https://github.com/A-Tokyo/apple-signin-auth/tree/204905bec6a2e545805f647c89cb7a17ea20c929
   async verifyIdToken(
     idToken: string,
     options: {
@@ -384,13 +383,11 @@ export default class AppleSignIn {
        */
       ignoreExpiration?: boolean;
       /**
-       * If you want to check subject (sub) a.k.a "user_identifier", provide a value here
+       * If you want to check subject (sub) a.k.a "user_identifier"
        */
       subject?: string;
-      // TODO: add authorizationCode
-      // authorizationCode?: string;
 
-      clientId?: string;
+      // authorizationCode?: string;
     }
   ): Promise<AppleIdTokenType> {
     if (!idToken) throw new Error("idToken is empty");

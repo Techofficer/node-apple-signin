@@ -1,4 +1,4 @@
-# e[Node.js] Sign in with Apple
+# [Node.js] Sign in with Apple
 
 Node.JS wrapper around [Sign in with Apple REST API](https://developer.apple.com/documentation/signinwithapplerestapi).
 

@@ -47,12 +47,15 @@ http://localhost:3000/auth/apple/callback?code=somecode&state=123.
 
 More detail can be found in [Apple docs](https://developer.apple.com/documentation/signinwithapplerestapi/generate_and_validate_tokens).
 
+You can either read the private key from a file using the `privateKeyPath` parameter or put in the `privateKey` directly into the parameter.
+
 ```javascript
 
 const clientSecret = appleSignin.getClientSecret({
     clientID: "com.gotechmakers.auth.client", // identifier of Apple Service ID.
     teamId: "teamId", // Apple Developer Team ID.
-    privateKeyPath: "/var/www/app/AuthKey_XXX.p8", // path to private key associated with your client ID.
+    privateKeyPath: "/var/www/app/AuthKey_XXX.p8", // path to private key associated with your client ID. OR use 'privateKey' parameter
+    // privateKey : "-----BEGIN PRIVATE KEY-----\n ... \n-----END PRIVATE KEY-----\n" // private key associated with your client ID.
     keyIdentifier: "XXX" // identifier of the private key.    
 });
 

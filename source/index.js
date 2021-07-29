@@ -30,26 +30,31 @@ const getAuthorizationUrl = (options = {}) => {
 };
 
 const getClientSecret = options => {
-  if (!options.clientID) throw new Error('clientID is empty');
-  if (!options.teamId) throw new Error('teamId is empty');
-  if (!options.keyIdentifier) throw new Error('keyIdentifier is empty');
-  if (!options.privateKeyPath) throw new Error('privateKeyPath is empty');
-  if (!fs.existsSync(options.privateKeyPath)) throw new Error("Can't find private key");
+    if (!options.clientID) throw new Error('clientID is empty');
+    if (!options.teamId) throw new Error('teamId is empty');
+    if (!options.keyIdentifier) throw new Error('keyIdentifier is empty');
+    if (!options.privateKey || !options.privateKeyPath) throw new Error('privateKeyPath or privateKey is empty');
+    if (!fs.existsSync(options.privateKeyPath)) throw new Error("Can't find private key");
 
-  const timeNow = Math.floor(Date.now() / 1000);
+    const timeNow = Math.floor(Date.now() / 1000);
 
-  const claims = {
-    iss: options.teamId,
-    iat: timeNow,
-    exp: timeNow + 15777000,
-    aud: ENDPOINT_URL,
-    sub: options.clientID,
-  };
+    const claims = {
+      iss: options.teamId,
+      iat: timeNow,
+      exp: timeNow + 15777000,
+      aud: ENDPOINT_URL,
+      sub: options.clientID,
+    };
 
-  const header = { alg: 'ES256', kid: options.keyIdentifier };
-  const key = fs.readFileSync(options.privateKeyPath);
+    const header = { alg: 'ES256', kid: options.keyIdentifier };
+    const key;
 
-  return jwt.sign(claims, key, { algorithm: 'ES256', header });
+    if (options.privateKeyPath)
+      key = fs.readFileSync(options.privateKeyPath)
+    else if (options.privateKey)
+      key = options.privateKey;
+
+    return jwt.sign(claims, key, { algorithm: 'ES256', header });
 };
 
 const getAuthorizationToken = async (code, options) => {

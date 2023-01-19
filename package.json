@@ -33,7 +33,7 @@
     }
   ],
   "dependencies": {
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "node-rsa": "^1.0.5",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
